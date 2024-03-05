@@ -3,9 +3,9 @@
 
 using namespace std;
 
-int prod(int x, int n, int k)
+float prod(int x, int n)
 {
-    int res = 1;
+    float res = 1;
     for (int k = 1; k < n; k++)
     {
         res *= (k + 1) + x * sin(abs(x));
@@ -13,18 +13,17 @@ int prod(int x, int n, int k)
     return res;
 }
 
-int f(int x, int n, int k)
+float f(int x, int n)
 {
-    return abs(x * cos(x)) + prod(x, n, k);
+    return abs(x * cos(x)) + prod(x, n);
 }
 
 int main()
 {
-    int x, int n, int k;
+    int x, int n;
     cin >> x;
     cin >> n;
-    cin >> k;
-    cout << f(x, n, k);
+    cout << f(x, n);
 
     return 0;
 }
