@@ -5,7 +5,8 @@
 
 using namespace std;
 
-int main() {
+int main()
+{
     ofstream out;
     out.open("hello.txt");
     if (out.is_open())
@@ -18,7 +19,7 @@ int main() {
 
         for (int k = 1; k < n; k++)
         {
-            summa += pow(x, 1/k) + abs(cos(x));
+            summa += pow(x, 1 / k) + abs(cos(x));
         }
 
         int res = x + summa;
@@ -26,14 +27,14 @@ int main() {
         out << "x: " << x << endl;
         out << "n: " << n << endl;
         out << "result: " << res << endl;
-
     }
 
     out.close();
 
     ifstream inputFile("hello.txt");
     string line;
-    while (getline(inputFile, line)) {
+    while (getline(inputFile, line))
+    {
         cout << line << endl;
     }
 

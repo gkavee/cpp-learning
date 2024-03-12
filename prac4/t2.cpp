@@ -3,7 +3,8 @@
 
 using namespace std;
 
-enum ZodiacSign {
+enum ZodiacSign
+{
     Aries,
     Taurus,
     Gemini,
@@ -25,7 +26,8 @@ struct ZNAK
     int BDAY[3];
 };
 
-int main() {
+int main()
+{
     ZNAK example;
     example.NAME = "Ekaterina";
     example.ZODIAC = Scorpio;

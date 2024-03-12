@@ -5,6 +5,7 @@ using namespace std;
 struct params
 {
     int chest;
+    
     int waist;
     int hip;
 };

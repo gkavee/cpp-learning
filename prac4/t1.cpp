@@ -37,7 +37,7 @@ int main()
     {
         cout << B[i] << " ";
     }
-    
+
     cout << "\nмассив C: ";
     for (int i = 0; i < 5; i++)
     {
