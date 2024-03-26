@@ -1,106 +1,157 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <locale>
+#include <cstdlib>
+
+using namespace std;
 
 class Student {
 public:
-    std::string lastName;
-    std::string firstName;
-    std::string middleName;
-    int birthYear;
-    std::string group;
-    int moduleGrade;
+    string name;
+    string surname;
+    string patronymic;
+    int birth_year;
+    string group;
+    int grade;
 
-    // Конструктор для удобства создания объектов Student
-    Student(std::string last, std::string first, std::string middle, int year, std::string grp)
-        : lastName(last), firstName(first), middleName(middle), birthYear(year), group(grp), moduleGrade(-1) {}
+    // Конструктор класса Student
+    Student(string _name, string _surname, string _patronymic, int _birth_year, string _group)
+        : name(_name), surname(_surname), patronymic(_patronymic), birth_year(_birth_year), group(_group), grade(0) {}
 };
 
 class Teacher {
 public:
-    std::string lastName;
-    std::string firstName;
-    std::string middleName;
+    string name;
+    string surname;
+    string patronymic;
     int experience;
-    std::string subject;
-    std::vector<Student> students;
+    string subject;
+    vector<Student> students;
 
-    // Конструктор для удобства создания объектов Teacher
-    Teacher(std::string last, std::string first, std::string middle, int exp, std::string subj)
-        : lastName(last), firstName(first), middleName(middle), experience(exp), subject(subj) {}
+    // Конструктор класса Teacher
+    Teacher(string _name, string _surname, string _patronymic, int _experience, string _subject)
+        : name(_name), surname(_surname), patronymic(_patronymic), experience(_experience), subject(_subject) {}
 
-    // Добавление студента к списку студентов преподавателя
-    void addStudent(Student student) {
-        students.push_back(student);
+    // Метод для добавления студента
+    void addStudent() {
+        string name, surname, patronymic, group;
+        int birth_year;
+
+        cout << "Введите имя студента: ";
+        cin >> name;
+        cout << "Введите фамилию студента: ";
+        cin >> surname;
+        cout << "Введите отчество студента: ";
+        cin >> patronymic;
+        cout << "Введите год рождения студента: ";
+        while (!(cin >> birth_year)) {
+            cin.clear();
+            cin.ignore();
+            cout << "Неверный ввод. Пожалуйста, введите корректный год рождения: ";
+        }
+        cout << "Введите группу студента: ";
+        cin >> group;
+
+        students.push_back(Student(name, surname, patronymic, birth_year, group));
     }
 
-    // Проставление оценки студенту по его фамилии
-    void gradeStudent(std::string studentLastName, int grade) {
-        for (auto& student : students) {
-            if (student.lastName == studentLastName) {
-                student.moduleGrade = grade;
-                break;
+    // Метод для постановки оценки
+    void setGrade() {
+        if (students.empty()) {
+            cout << "Пока не добавлены студенты." << endl;
+            return;
+        }
+
+        cout << "Введите фамилию студента для постановки оценки: ";
+        string surname;
+        cin >> surname;
+
+        for (Student& student : students) {
+            if (student.surname == surname) {
+                cout << "Введите оценку для " << student.surname << ": ";
+                cin >> student.grade;
+                return;
             }
         }
+        cout << "Студент с фамилией " << surname << " не найден." << endl;
     }
 
-    // Вывод информации о преподавателе и студентах
-    void displayInfo() {
-        std::cout << "Преподаватель: " << firstName << " " << lastName << " " << middleName << std::endl;
-        std::cout << "Стаж работы: " << experience << " лет" << std::endl;
-        std::cout << "Преподаваемый предмет: " << subject << std::endl;
-
-        std::cout << "\nСписок студентов:" << std::endl;
-        for (const auto& student : students) {
-            std::cout << "Фамилия: " << student.lastName << ", Имя: " << student.firstName
-                      << ", Отчество: " << student.middleName << ", Год рождения: " << student.birthYear
-                      << ", Группа: " << student.group << ", Оценка за модуль: " << student.moduleGrade << std::endl;
+    // Метод для вывода списка студентов
+    void printStudents() {
+        if (students.empty()) {
+            cout << "Пока не добавлены студенты." << endl;
+            return;
         }
+
+        cout << "Список студентов:" << endl;
+        for (const Student& student : students) {
+            cout << student.surname << " " << student.name << " " << student.patronymic << " - " << student.group << " - Оценка: " << student.grade << endl;
+        }
+    }
+
+    // Метод для вывода информации о преподавателе
+    void printTeacherInfo() {
+        cout << "Преподаватель: " << name << " " << surname << " " << patronymic << " - Опыт: " << experience << " лет - Предмет: " << subject << endl;
     }
 };
 
 int main() {
-    std::string command;
-    Teacher teacher("Иванов", "Иван", "Иванович", 10, "Математика");
+    setlocale(LC_ALL, "RUS");
+    system("chcp 1251");
 
-    while (true) {
-        std::cout << "Выберите команду (ДобавитьСтудента, ПроставитьОценку, ВывестиИнформацию, Выход): ";
-        std::cin >> command;
-
-        if (command == "ДобавитьСтудента") {
-            std::string last, first, middle, group;
-            int year;
-            std::cout << "Введите фамилию студента: ";
-            std::cin >> last;
-            std::cout << "Введите имя студента: ";
-            std::cin >> first;
-            std::cout << "Введите отчество студента: ";
-            std::cin >> middle;
-            std::cout << "Введите год рождения студента: ";
-            std::cin >> year;
-            std::cout << "Введите группу студента: ";
-            std::cin >> group;
-
-            Student newStudent(last, first, middle, year, group);
-            teacher.addStudent(newStudent);
-        } else if (command == "ПроставитьОценку") {
-            std::string studentLastName;
-            int grade;
-            std::cout << "Введите фамилию студента для проставления оценки: ";
-            std::cin >> studentLastName;
-            std::cout << "Введите оценку: ";
-            std::cin >> grade;
-
-            teacher.gradeStudent(studentLastName, grade);
-        } else if (command == "ВывестиИнформацию") {
-            teacher.displayInfo();
-        } else if (command == "Выход") {
-            teacher.displayInfo();
-            break;
-        } else {
-            std::cout << "Неизвестная команда. Попробуйте еще раз." << std::endl;
-        }
+    string name, surname, patronymic, subject;
+    int experience;
+    cout << "Введите имя преподавателя: ";
+    cin >> name;
+    cout << "Введите фамилию преподавателя: ";
+    cin >> surname;
+    cout << "Введите отчество преподавателя: ";
+    cin >> patronymic;
+    cout << "Введите опыт работы преподавателя (в годах): ";
+     while (!(cin >> experience)) {
+        cin.clear();
+        cin.ignore();
+        cout << "Неверный ввод. Пожалуйста, введите корректный опыт работы (в годах): ";
     }
+    cin.ignore();
+    cout << "Введите предмет преподавания: ";
+    getline(cin, subject);
+
+    Teacher teacher(name, surname, patronymic, experience, subject);
+
+    int choice;
+    do {
+        cout << "\nМеню:" << endl;
+        cout << "1. Добавить студента" << endl;
+        cout << "2. Поставить оценку" << endl;
+        cout << "3. Вывести список студентов" << endl;
+        cout << "4. Вывести информацию о преподавателе" << endl;
+        cout << "5. Выйти" << endl;
+        cout << "Введите ваш выбор: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                teacher.addStudent();
+                break;
+            case 2:
+                teacher.setGrade();
+                break;
+            case 3:
+                teacher.printStudents();
+                break;
+            case 4:
+                teacher.printTeacherInfo();
+                break;
+            case 5:
+                cout << "Завершение программы..." << endl;
+                break;
+            default:
+                cout << "Неверный выбор. Пожалуйста, введите число от 1 до 5." << endl;
+                return 0;
+        }
+    } while (choice != 5);
 
     return 0;
 }

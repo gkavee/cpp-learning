@@ -3,7 +3,7 @@
 
 using namespace std;
 
-float prod(int x, int n)
+float prod(float x, float n)
 {
     float res = 1;
     for (int k = 1; k < n; k++)
@@ -13,17 +13,17 @@ float prod(int x, int n)
     return res;
 }
 
-float f(int x, int n)
+float f(float x, float n)
 {
     return abs(x * cos(x)) + prod(x, n);
 }
 
-int main()
-{
-    int x, int n;
+int main() {
+    float x, n;
     cin >> x;
     cin >> n;
-    cout << f(x, n);
+    cout << f(x, n) << endl;
+    cout << prod(x, n);
 
     return 0;
 }
